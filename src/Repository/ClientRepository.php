@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Client;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method Client|null find($id, $lockMode = null, $lockVersion = null)
@@ -14,9 +15,27 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class ClientRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+
+    private $manager;
+
+    public function __construct(ManagerRegistry $registry,EntityManagerInterface $manager)
     {
         parent::__construct($registry, Client::class);
+        $this->manager = $manager;
+
+    }
+    public function saveClient($nom, $prenom, $email, $tel)
+    {
+        $newClient= new Client();
+
+        $newClient
+            ->setNom($nom)
+            ->setPrenom($prenom)
+            ->setEmail($email)
+            ->setTel($tel);
+
+        $this->manager->persist($newClient);
+        $this->manager->flush();
     }
 
     // /**
