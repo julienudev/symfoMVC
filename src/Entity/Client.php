@@ -89,4 +89,15 @@ class Client
 
         return $this;
     }
+
+    public function toArray()
+    {
+        return [
+            'id' => $this->getId(),
+            'nom' => $this->getNom(),
+            'prenom' => $this->getPrenom(),
+            'email' => $this->getEmail(),
+            'tel' => $this->getTel()
+        ];
+    }
 }
